@@ -339,6 +339,7 @@ $$('.button').forEach(button => {
                 return target[key];
             }
         });
+      countElem.setAttribute("role", "progressbar");
 
     svgPath.y = 30;
     svgPath.s = 0;
@@ -372,7 +373,12 @@ $$('.button').forEach(button => {
                     duration: 3.8,
                     delay: .8,
                     onUpdate() {
-                        countElem.innerHTML = Math.round(count.number) + '%';
+                      let percLoaded = Math.round(count.number);
+                      countElem.innerHTML = percLoaded + '%';
+                      countElem.setAttribute("aria-valuenow", percLoaded);
+                    }, 
+                    onComplete() {
+                      countElem.setAttribute("aria-valuetext", "done");
                     }
                 });
 
@@ -406,6 +412,8 @@ $$('.button').forEach(button => {
                 setTimeout(() => {
                     button.classList.remove('loading', 'reset');
                     iconDiv.removeAttribute('style');
+                    countElem.setAttribute("aria-valuenow", 0);
+                    countElem.setAttribute("aria-valuetext", "");
                 }, 400);
 
             }
